@@ -1,7 +1,6 @@
 import AlunoModel from '../models/AlunoModel.js';
 
-
-export const criarAluno = async (req, res) => {
+export const criar = async (req, res) => {
     try {
         if (!req.body) {
             return res.status(400).json({ error: 'Corpo da requisição vazio. Envie os dados!' });
@@ -21,7 +20,7 @@ export const criarAluno = async (req, res) => {
     }
 };
 
-export const buscarTodosAlunos = async (req, res) => {
+export const buscarTodos = async (req, res) => {
     try {
         const registros = await AlunoModel.buscarTodos(req.query);
 
@@ -36,7 +35,7 @@ export const buscarTodosAlunos = async (req, res) => {
     }
 };
 
-export const buscarAlunoPorId = async (req, res) => {
+export const buscarPorId = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -58,7 +57,7 @@ export const buscarAlunoPorId = async (req, res) => {
     }
 };
 
-export const atualizarAluno = async (req, res) => {
+export const atualizar = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -89,7 +88,7 @@ export const atualizarAluno = async (req, res) => {
     }
 };
 
-export const deletarAluno = async (req, res) => {
+export const deletar = async (req, res) => {
     try {
         const { id } = req.params;
 

@@ -1,7 +1,7 @@
 import prisma from '../utils/prismaClient.js';
 
 export default class AlunoModel {
-    constructor({ id = null, nome = null, escola = null, turma = null, foto = null } = {}) {
+    constructor({ id = null, nome, escola = true, turma = null, foto = null } = {}) {
         this.id = id;
         this.nome = nome;
         this.escola = escola;
@@ -35,10 +35,8 @@ export default class AlunoModel {
         const where = {};
 
         if (filtros.nome) where.nome = { contains: filtros.nome, mode: 'insensitive' };
-        if (filtros.escola !== undefined) where.escola = filtros.escola;
-        if (filtros.turma !== undefined) where.turma = filtros.turma;
-        if (filtros.foto !== undefined) where.foto = filtros.foto;
-        
+        if (filtros.escola) where.escola = { contains: filtros.escola, mode: 'insensitive' };
+        if (filtros.turma) where.turma = { contains: filtros.turma, mode: 'insensitive' };
 
         return prisma.aluno.findMany({ where });
     }

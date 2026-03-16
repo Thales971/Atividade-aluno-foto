@@ -1,7 +1,7 @@
 import AlunoModel from '../models/AlunoModel.js';
-import {generatePdfTodos, generatePdfs} from '../utils/pdfHelper.js'
+import { gerarPdfAluno, gerarPdfTodos } from '../utils/pdfHelper.js';
 
-export const relatorioPorId = async (req, res) => {
+export const gerarPdfPorId = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -15,19 +15,36 @@ export const relatorioPorId = async (req, res) => {
         if (!aluno) {
             return res.status(404).json({ error: 'Aluno não encontrado.' });
         }
-const pdf = await gerarPdfAluno(aluno);
-return res
-.set({
-    'Content-Type': 'application/pdf',
-     'Content-Disposition': 'incline; filename="aluno_${id}.pdf"',
-})
 
-.send(pdf);
-    }catch (error){
-        console.error('Erro ao gerar PDF:')
-        res.json({ data: aluno });
+        const pdf = await gerarPdfAluno(aluno);
+
+        return res
+            .set({
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': `inline; filename="aluno_${parsedId}.pdf"`,
+            })
+            .send(pdf);
     } catch (error) {
-        console.error('Erro ao buscar aluno:', error);
-        res.status(500).json({ error: 'Erro ao buscar aluno.' });
+        console.error('Erro ao gerar PDF por ID:', error);
+        return res.status(500).json({ error: 'Erro ao gerar PDF.' });
+    }
+};
+
+export const gerarPdfTodos = async (req, res) => {
+    try {
+        const filtros = req.query || {};
+        const alunos = await AlunoModel.buscarTodos(filtros);
+
+        const pdf = await gerarPdfTodos(alunos);
+
+        return res
+            .set({
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': `inline; filename="alunos.pdf"`,
+            })
+            .send(pdf);
+    } catch (error) {
+        console.error('Erro ao gerar PDF de todos:', error);
+        return res.status(500).json({ error: 'Erro ao gerar PDF.' });
     }
 };
