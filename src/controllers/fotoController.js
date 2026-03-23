@@ -1,5 +1,5 @@
 import AlunoModel from '../models/AlunoModel.js';
-import fs from 'fs';
+import fs from 'fs/promises';
 import { processarFoto, removerFoto } from '../utils/fotoHelper.js';
 
 
